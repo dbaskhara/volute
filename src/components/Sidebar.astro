@@ -76,16 +76,52 @@ const navItems = [
   <div class="user-profile">
     <div class="avatar">
       <img
+        id="sidebar-avatar"
         src="https://ui-avatars.com/api/?name=User+Name&background=random"
         alt="User Avatar"
       />
     </div>
     <div class="user-info">
-      <span class="user-name">John Doe</span>
-      <span class="user-role">Admin</span>
+      <span id="sidebar-name" class="user-name">John Doe</span>
+      <span id="sidebar-role" class="user-role">Admin</span>
     </div>
   </div>
 </aside>
+
+<script>
+  import { db } from "../lib/db";
+
+  async function loadProfile() {
+    const profile = await db.profile.get(1);
+    const sidebarName = document.getElementById("sidebar-name");
+    const sidebarRole = document.getElementById("sidebar-role");
+    const sidebarAvatar = document.getElementById(
+      "sidebar-avatar",
+    ) as HTMLImageElement;
+
+    if (profile) {
+      if (sidebarName) sidebarName.textContent = profile.name;
+      if (sidebarRole) sidebarRole.textContent = profile.role;
+      if (sidebarAvatar) sidebarAvatar.src = profile.avatarUrl;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadProfile);
+
+  // Listen for custom event from settings page to update immediately
+  window.addEventListener("profile-updated", ((e: CustomEvent) => {
+    const { name, role, avatarUrl } = e.detail;
+    const sidebarName = document.getElementById("sidebar-name");
+    const sidebarRole = document.getElementById("sidebar-role");
+    const sidebarAvatar = document.getElementById(
+      "sidebar-avatar",
+    ) as HTMLImageElement;
+
+    if (sidebarName) sidebarName.textContent = name;
+    if (sidebarRole) sidebarRole.textContent = role;
+    if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
+  }) as EventListener);
+</script>
 
 <style>
   .sidebar {
