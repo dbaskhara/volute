@@ -1,0 +1,196 @@
+---
+const { pathname } = Astro.url;
+
+const navItems = [
+  {
+    name: "Dashboard",
+    icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+    href: "/",
+  },
+  {
+    name: "Analytics",
+    icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+    href: "/analytics",
+  },
+  {
+    name: "Projects",
+    icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z",
+    href: "/projects",
+  },
+  {
+    name: "Team",
+    icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
+    href: "/team",
+  },
+  {
+    name: "Settings",
+    icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z",
+    href: "/settings",
+  },
+];
+---
+
+<aside class="sidebar glass-panel">
+  <div class="logo">
+    <svg
+      class="logo-icon"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+    </svg>
+    <span class="logo-text">Volute</span>
+  </div>
+
+  <nav class="nav-menu">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-item ${pathname === item.href ? "active" : ""}`}
+        >
+          <svg
+            class="nav-icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d={item.icon}
+            />
+          </svg>
+          <span class="nav-text">{item.name}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="user-profile">
+    <div class="avatar">
+      <img
+        src="https://ui-avatars.com/api/?name=User+Name&background=random"
+        alt="User Avatar"
+      />
+    </div>
+    <div class="user-info">
+      <span class="user-name">John Doe</span>
+      <span class="user-role">Admin</span>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    border-right: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border instead of full glass panel maybe? Reuse glass-panel class */
+    /* Override glass-panel for sidebar specific needs if any */
+    border-radius: 0; /* Sidebar typically square on left */
+    background: rgba(15, 23, 42, 0.95); /* Slightly more opaque */
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    color: var(--color-text-primary);
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent-primary);
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
+    transform: translateX(4px);
+  }
+
+  .nav-item.active {
+    background: var(--color-accent-primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--color-bg-tertiary);
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+  }
+
+  .user-role {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+</style>
