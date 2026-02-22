@@ -2,71 +2,26 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 
-const stats = [
-	{
-		title: "Total Revenue",
-		value: "$45,231.89",
-		change: "+20.1%",
-		trend: "up",
-		icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-	},
-	{
-		title: "New Users",
-		value: "+2350",
-		change: "+18.7%",
-		trend: "up",
-		icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-	},
-	{
-		title: "Sales",
-		value: "+12,234",
-		change: "+19%",
-		trend: "up",
-		icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
-	},
-	{
-		title: "Active Now",
-		value: "+573",
-		change: "+201",
-		trend: "up",
-		icon: "M13 10V3L4 14h7v7l9-11h-7z",
-	},
-];
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const currentDate = new Date();
+const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+const currentYear = currentDate.getFullYear();
 
-const activity = [
-	{
-		user: "Jackson Lee",
-		action: "Created new project",
-		time: "2 min ago",
-		avatar: "https://ui-avatars.com/api/?name=Jackson+Lee&background=random",
-	},
-	{
-		user: "Isabella Nguyen",
-		action: "Commented on task",
-		time: "1 hour ago",
-		avatar: "https://ui-avatars.com/api/?name=Isabella+Nguyen&background=random",
-	},
-	{
-		user: "William Kim",
-		action: "Uploaded 3 files",
-		time: "3 hours ago",
-		avatar: "https://ui-avatars.com/api/?name=William+Kim&background=random",
-	},
-	{
-		user: "Sofia Davis",
-		action: "Completed milestone",
-		time: "5 hours ago",
-		avatar: "https://ui-avatars.com/api/?name=Sofia+Davis&background=random",
-	},
-];
+const mockDays = Array.from({ length: 35 }, (_, i) => {
+	const num = i + 1 <= 31 ? i + 1 : (i + 1) % 31;
+	const isCurrentMonth = i < 31;
+	const isToday = num === currentDate.getDate() && isCurrentMonth;
+	const hasEvents = i === 12 || i === 24 || i === 5;
+	return { num, isCurrentMonth, isToday, hasEvents };
+});
 ---
 
-<Layout title="Dashboard | AstroDash">
+<Layout title="Dashboard | Volute">
 	<div class="dashboard-header">
 		<div>
 			<h1 class="page-title">Dashboard Overview</h1>
 			<p class="page-subtitle">
-				Welcome back, here's what's happening with your projects today.
+				Welcome back, here's your calendar view.
 			</p>
 		</div>
 		<div class="actions">
@@ -84,140 +39,142 @@ const activity = [
 						stroke-width="2"
 						d="M12 4v16m8-8H4"></path>
 				</svg>
-				New Project
+				New Event
 			</button>
 		</div>
 	</div>
 
-	<div class="stats-grid">
-		{
-			stats.map((stat) => (
-				<Card class="stat-card">
-					<div class="stat-header">
-						<div class="stat-icon-wrapper">
-							<svg
-								class="stat-icon"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d={stat.icon}
-								/>
-							</svg>
-						</div>
-						<span
-							class={`stat-change ${stat.trend === "up" ? "text-success" : "text-danger"}`}
-						>
-							{stat.change}
-						</span>
-					</div>
-					<div class="stat-content">
-						<h3 class="stat-title">{stat.title}</h3>
-						<p class="stat-value">{stat.value}</p>
-					</div>
-				</Card>
-			))
-		}
-	</div>
-
-	<div class="content-grid">
-		<Card title="Revenue Review" class="chart-card">
-			<div class="chart-container">
-				{
-					/* Placeholder for a chart - using SVG for visual representation */
-				}
-				<svg viewBox="0 0 800 300" class="chart-svg">
-					<defs>
-						<linearGradient
-							id="gradient"
-							x1="0%"
-							y1="0%"
-							x2="0%"
-							y2="100%"
-						>
-							<stop
-								offset="0%"
-								stop-color="var(--color-accent-primary)"
-								stop-opacity="0.3"></stop>
-							<stop
-								offset="100%"
-								stop-color="var(--color-accent-primary)"
-								stop-opacity="0"></stop>
-						</linearGradient>
-					</defs>
-					<path
-						d="M0,250 C100,200 200,280 300,150 C400,50 500,200 600,100 C700,50 800,150 800,150 L800,300 L0,300 Z"
-						fill="url(#gradient)"></path>
-					<path
-						d="M0,250 C100,200 200,280 300,150 C400,50 500,200 600,100 C700,50 800,150 800,150"
-						fill="none"
-						stroke="var(--color-accent-primary)"
-						stroke-width="3"></path>
-
-					<g class="chart-points">
-						<circle
-							cx="0"
-							cy="250"
-							r="4"
-							fill="white"
-							stroke="var(--color-accent-primary)"
-							stroke-width="2"></circle>
-						<circle
-							cx="300"
-							cy="150"
-							r="4"
-							fill="white"
-							stroke="var(--color-accent-primary)"
-							stroke-width="2"></circle>
-						<circle
-							cx="600"
-							cy="100"
-							r="4"
-							fill="white"
-							stroke="var(--color-accent-primary)"
-							stroke-width="2"></circle>
-					</g>
-				</svg>
-				<div class="chart-labels">
-					<span>Jan</span><span>Feb</span><span>Mar</span><span
-						>Apr</span
-					><span>May</span><span>Jun</span><span>Jul</span>
-				</div>
+	<Card class="calendar-card">
+		<div class="calendar-header">
+			<h2 id="calendar-title">{currentMonth} {currentYear}</h2>
+			<div class="calendar-nav">
+				<button class="btn-icon" id="prev-month">&lt;</button>
+				<button class="btn-icon" id="next-month">&gt;</button>
 			</div>
-		</Card>
-
-		<Card title="Recent Activity" class="activity-card">
-			<div class="activity-list">
+		</div>
+		<div class="calendar-grid">
+			<div class="calendar-weekdays">
+				{daysOfWeek.map((day) => <div class="weekday">{day}</div>)}
+			</div>
+			<div class="calendar-days" id="calendar-days">
+				<!-- Initial render block to avoid FOUC. Will be hydrated by JS. -->
 				{
-					activity.map((item) => (
-						<div class="activity-item">
-							<img
-								src={item.avatar}
-								alt={item.user}
-								class="activity-avatar"
-							/>
-							<div class="activity-details">
-								<p class="activity-text">
-									<span class="activity-user">
-										{item.user}
-									</span>{" "}
-									{item.action}
-								</p>
-								<span class="activity-time">{item.time}</span>
-							</div>
+					mockDays.map((day) => (
+						<div
+							class={`day ${!day.isCurrentMonth ? "other-month" : ""} ${day.isToday ? "today" : ""}`}
+						>
+							<span class="day-number">{day.num}</span>
+							{day.hasEvents && <div class="event-dot" />}
 						</div>
 					))
 				}
 			</div>
-		</Card>
-	</div>
+		</div>
+	</Card>
 </Layout>
 
-<style>
+<script>
+	import { db } from "../lib/db";
+
+	document.addEventListener("DOMContentLoaded", async () => {
+		const calendarTitle = document.getElementById("calendar-title");
+		const calendarDays = document.getElementById("calendar-days");
+		const prevBtn = document.getElementById("prev-month");
+		const nextBtn = document.getElementById("next-month");
+
+		let date = new Date();
+		const today = new Date();
+
+		let events: any[] = [];
+		try {
+			events = await db.events.toArray();
+		} catch (err) {
+			console.error("Failed to load events", err);
+		}
+
+		const renderCalendar = () => {
+			date.setDate(1);
+			const month = date.getMonth();
+			const year = date.getFullYear();
+
+			const monthNames = [
+				"January",
+				"February",
+				"March",
+				"April",
+				"May",
+				"June",
+				"July",
+				"August",
+				"September",
+				"October",
+				"November",
+				"December",
+			];
+
+			if (calendarTitle)
+				calendarTitle.innerText = `${monthNames[month]} ${year}`;
+
+			const daysInMonth = new Date(year, month + 1, 0).getDate();
+			const firstDayIndex = date.getDay();
+			const prevLastDay = new Date(year, month, 0).getDate();
+			const lastDayIndex = new Date(year, month + 1, 0).getDay();
+			const nextDays = 7 - lastDayIndex - 1;
+
+			let daysHTML = "";
+
+			// Previous month days
+			for (let x = firstDayIndex; x > 0; x--) {
+				daysHTML += `<div class="day other-month"><span class="day-number">${prevLastDay - x + 1}</span></div>`;
+			}
+
+			// Current month days
+			for (let i = 1; i <= daysInMonth; i++) {
+				const isToday =
+					i === today.getDate() &&
+					date.getMonth() === today.getMonth() &&
+					date.getFullYear() === today.getFullYear();
+
+				const dayStr = String(i).padStart(2, "0");
+				const monthStr = String(month + 1).padStart(2, "0");
+				const dateString = `${year}-${monthStr}-${dayStr}`;
+				const hasEvents = events.some((e) => e.date === dateString);
+
+				const eventDot = hasEvents
+					? '<div class="event-dot"></div>'
+					: "";
+
+				daysHTML += `<div class="day ${isToday ? "today" : ""}"><span class="day-number">${i}</span>${eventDot}</div>`;
+			}
+
+			// Next month days
+			for (let j = 1; j <= nextDays; j++) {
+				daysHTML += `<div class="day other-month"><span class="day-number">${j}</span></div>`;
+			}
+
+			if (calendarDays) calendarDays.innerHTML = daysHTML;
+		};
+
+		if (prevBtn) {
+			prevBtn.addEventListener("click", () => {
+				date.setMonth(date.getMonth() - 1);
+				renderCalendar();
+			});
+		}
+
+		if (nextBtn) {
+			nextBtn.addEventListener("click", () => {
+				date.setMonth(date.getMonth() + 1);
+				renderCalendar();
+			});
+		}
+
+		// Initial hydration
+		renderCalendar();
+	});
+</script>
+
+<style is:global>
 	.dashboard-header {
 		display: flex;
 		justify-content: space-between;
@@ -233,7 +190,6 @@ const activity = [
 	}
 
 	.page-subtitle {
-		color: var(--color-text-description); /* Fallback or use muted */
 		color: var(--color-text-muted);
 	}
 
@@ -248,6 +204,8 @@ const activity = [
 		font-weight: 600;
 		transition: all var(--transition-fast);
 		box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+		border: none;
+		cursor: pointer;
 	}
 
 	.btn-primary:hover {
@@ -256,158 +214,117 @@ const activity = [
 		box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.5);
 	}
 
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 1.5rem;
+	.calendar-card {
+		padding: 2rem;
+	}
+
+	.calendar-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		margin-bottom: 2rem;
 	}
 
-	.stat-card {
-		position: relative;
-		overflow: hidden;
-	}
-
-	.stat-card::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100px;
-		height: 100px;
-		background: radial-gradient(
-			circle,
-			rgba(255, 255, 255, 0.05) 0%,
-			rgba(255, 255, 255, 0) 70%
-		);
-		border-radius: 50%;
-		transform: translate(30%, -30%);
-	}
-
-	.stat-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		margin-bottom: 1rem;
-	}
-
-	.stat-icon-wrapper {
-		width: 48px;
-		height: 48px;
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: var(--radius-lg);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--color-accent-primary);
-	}
-
-	.stat-icon {
-		width: 24px;
-		height: 24px;
-	}
-
-	.stat-change {
-		font-size: 0.85rem;
-		font-weight: 500;
-		padding: 0.25rem 0.5rem;
-		border-radius: var(--radius-md);
-		background: rgba(255, 255, 255, 0.05);
-	}
-
-	.text-success {
-		color: var(--color-success);
-	}
-	.text-danger {
-		color: var(--color-danger);
-	}
-
-	.stat-value {
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-text-primary);
-		letter-spacing: -0.025em;
-	}
-
-	.content-grid {
-		display: grid;
-		grid-template-columns: 2fr 1fr;
-		gap: 1.5rem;
-	}
-
-	@media (max-width: 1024px) {
-		.content-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-
-	.chart-container {
-		height: 300px;
-		width: 100%;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.chart-svg {
-		flex: 1;
-		width: 100%;
-		height: 100%;
-		overflow: visible;
-	}
-
-	.chart-labels {
-		display: flex;
-		justify-content: space-between;
-		margin-top: 1rem;
-		color: var(--color-text-muted);
-		font-size: 0.85rem;
-		padding: 0 1rem;
-	}
-
-	.activity-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	.activity-item {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		padding-bottom: 1rem;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-	}
-
-	.activity-item:last-child {
-		border-bottom: none;
-		padding-bottom: 0;
-	}
-
-	.activity-avatar {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		border: 2px solid var(--color-bg-tertiary);
-	}
-
-	.activity-details {
-		flex: 1;
-	}
-
-	.activity-text {
-		color: var(--color-text-secondary);
-		font-size: 0.9rem;
-		margin-bottom: 0.25rem;
-	}
-
-	.activity-user {
+	.calendar-header h2 {
+		font-size: 1.5rem;
 		font-weight: 600;
 		color: var(--color-text-primary);
 	}
 
-	.activity-time {
-		font-size: 0.8rem;
+	.calendar-nav {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.btn-icon {
+		background: var(--color-bg-tertiary);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		color: var(--color-text-primary);
+		width: 36px;
+		height: 36px;
+		border-radius: var(--radius-md);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.btn-icon:hover {
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	.calendar-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.calendar-weekdays {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		text-align: center;
+		font-weight: 600;
 		color: var(--color-text-muted);
+		padding-bottom: 1rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.calendar-days {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 0.5rem;
+		auto-rows: minmax(100px, auto);
+	}
+
+	.day {
+		background: rgba(255, 255, 255, 0.02);
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		border-radius: var(--radius-md);
+		padding: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		transition: all 0.2s;
+		cursor: pointer;
+		min-height: 100px;
+	}
+
+	.day:hover {
+		background: rgba(255, 255, 255, 0.05);
+		transform: translateY(-2px);
+	}
+
+	.day-number {
+		font-weight: 500;
+		color: var(--color-text-secondary);
+		width: 28px;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+	}
+
+	.day.other-month {
+		opacity: 0.4;
+	}
+
+	.day.today {
+		border-color: var(--color-accent-primary);
+	}
+
+	.day.today .day-number {
+		background: var(--color-accent-primary);
+		color: white;
+	}
+
+	.event-dot {
+		width: 8px;
+		height: 8px;
+		background: var(--color-success);
+		border-radius: 50%;
+		margin-top: auto;
+		align-self: center;
 	}
 </style>
