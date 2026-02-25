@@ -16,10 +16,19 @@ export interface AppEvent {
   time: string;
   type: string;
 }
+export interface Expense {
+  id?: number;
+  title: string;
+  amount: number;
+  date: string;
+  category: string;
+  description?: string;
+}
 
 const db = new Dexie('VoluteAppDB') as Dexie & {
   profile: EntityTable<UserProfile, 'id'>;
   events: EntityTable<AppEvent, 'id'>;
+  expenses: EntityTable<Expense, 'id'>;
 };
 
 // Schema declaration
@@ -30,6 +39,12 @@ db.version(1).stores({
 db.version(2).stores({
   profile: '++id, name, role, email',
   events: '++id, date, type'
+});
+
+db.version(3).stores({
+  profile: '++id, name, role, email',
+  events: '++id, date, type',
+  expenses: '++id, date, category'
 });
 
 export { db };
